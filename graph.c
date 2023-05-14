@@ -91,3 +91,30 @@ void print_intf(interface_t * endpoint) {
             endpoint->name, nbr_node->name, link->cost); 
 
 }
+
+interface_t *
+get_node_if_by_name(node_t *node, char *if_name) {
+  for (int i = 0; i < MAX_INTF_PER_NODE; i++) {
+    // Assume we insert from begining to end in sequence
+    if (node->intf[i] == NULL) return NULL;
+    if (strncmp(node->intf[i]->name, if_name, INTF_NAME_SIZE) == 0) 
+      return node->intf[i];
+  }
+  return NULL;
+}
+
+node_t *
+get_node_by_node_name(graph_t *topo, char *node_name) {
+  glthread_t *curr;
+  node_t *node;
+
+  ITERATE_GLTHREAD_BEGIN(&topo->node_list, curr){
+    if (curr) {
+      node = graph_glue_to_node(curr);
+      if (strncmp(node->name, node_name, NODE_NAME_SIZE) == 0) {
+        return node;
+      }
+    }
+  } ITERATE_GLTHREAD_END(&topo->node_list, curr);
+  return NULL;
+}

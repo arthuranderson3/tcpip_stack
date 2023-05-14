@@ -2,6 +2,7 @@
 #define __AA_TCPIP_STACK_GRAPH__
 
 #include <assert.h>
+#include <string.h>
 #include "gluethread/glthread.h"
 
 #define INTF_NAME_SIZE 16
@@ -92,8 +93,19 @@ get_linked_node(interface_t * intf);
 int
 get_node_available_intf(node_t * rt);
 
-void print_graph(graph_t * g);
-void print_node(node_t * node);
-void print_intf(interface_t * endpoint);
+void 
+print_graph(graph_t * g);
+
+void 
+print_node(node_t * node);
+
+void
+print_intf(interface_t * endpoint);
+
+interface_t *
+get_node_if_by_name(node_t *node, char *if_name);
+
+node_t *
+get_node_by_node_name(graph_t *topo, char *node_name);
 
 #endif // __AA_TCPIP_STACK_GRAPH__
