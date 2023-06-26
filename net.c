@@ -12,9 +12,11 @@ ip_parse_v4(char * addr) {
 
   int size = strlen(addr) + 1;
   char address[size];
-  strncpy(address, addr, size);
-  address[size-1] = '\0';
+  strncpy(address, addr, size - 1);
+  address[size - 1] = '\0';
 
+  // IP V4 address xxx.xxx.xxx.xxx
+  // each xxx is [0-255]
   int idx = 0;
   char * delim = ".";
   char * token = strtok(address, delim);
@@ -37,3 +39,4 @@ void
 intf_nw_prop_init(intf_nw_prop_t *i) {
   
 }
+

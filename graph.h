@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <string.h>
 #include "gluethread/glthread.h"
+#include "net.h"
 
 #define INTF_NAME_SIZE 16
 #define NODE_NAME_SIZE 16
@@ -32,12 +33,14 @@ typedef struct interface_ {
   char name[INTF_NAME_SIZE];
   node_t * att_node;
   link_t * link;
+  intf_nw_props_t intf_nw_props;
 } interface_t;
 
 struct node_ {
   char name[NODE_NAME_SIZE];
   interface_t * intf[MAX_INTF_PER_NODE];
   glthread_t graph_glue;
+  node_nw_prop_t node_nw_prop;
 };
 
 struct link_ {
