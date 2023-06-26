@@ -33,7 +33,7 @@ typedef struct interface_ {
   char name[INTF_NAME_SIZE];
   node_t * att_node;
   link_t * link;
-  intf_nw_props_t intf_nw_props;
+  intf_nw_prop_t intf_nw_props;
 } interface_t;
 
 struct node_ {
