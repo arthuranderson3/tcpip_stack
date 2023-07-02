@@ -2,10 +2,11 @@ CC=gcc
 CFLAGS=-g
 TARGET:topo_test
 
-OBJS=gluethread/glthread.o \
-		  graph.o 		   \
-			net.o 				 \
-		  topology.o
+OBJS=gluethread/glthread.o	\
+		graph.o		\
+		net.o 		\
+		utils.o		\
+		topology.o
 
 GL_OBJS=gluethread/glthread.o
 
@@ -30,10 +31,20 @@ graph.o:graph.c
 net.o:net.c
 	${CC} ${CFLAGS} -c -I . net.c -o net.o
 
+utils.o:utils.c
+	${CC} ${CFLAGS} -c -I . utils.c -o utils.o
+
+utils_test:utils_test.o utils.o
+	${CC} ${CFLAGS} utils_test.o utils.o -o utils_test
+
+utils_test.o:utils_test.c
+	${CC} ${CFLAGS} -c -I . utils_test.c -o utils_test.o
+
 topology.o:topology.c
 	${CC} ${CFLAGS} -c -I . topology.c -o topology.o
 
 clean:
-	rm *.o
-	rm gluethread/glthread.o
+	rm ${OBJS}
 	rm *_test
+	rm *_test.o
+	rm gluethread/glthread_test.o

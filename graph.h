@@ -6,7 +6,7 @@
 #include "gluethread/glthread.h"
 #include "net.h"
 
-#define INTF_NAME_SIZE 16
+#define IF_NAME_SIZE 16
 #define NODE_NAME_SIZE 16
 #define TOPOLOGY_NAME_SIZE 32
 #define MAX_INTF_PER_NODE 10
@@ -30,22 +30,22 @@ typedef struct link_ link_t;
   [Cable: Link] -- has -- [2 Endpoints: Interface]
  **/
 typedef struct interface_ {
-  char name[INTF_NAME_SIZE];
-  node_t * att_node;
-  link_t * link;
-  intf_nw_prop_t intf_nw_props;
+  char if_name[IF_NAME_SIZE];
+  struct node_ * att_node;
+  struct link_ * link;
+  struct intf_nw_prop_ intf_nw_props;
 } interface_t;
 
 struct node_ {
-  char name[NODE_NAME_SIZE];
-  interface_t * intf[MAX_INTF_PER_NODE];
+  char node_name[NODE_NAME_SIZE];
+  struct interface_ * intf[MAX_INTF_PER_NODE];
   glthread_t graph_glue;
-  node_nw_prop_t node_nw_prop;
+  struct node_nw_prop_ node_nw_prop;
 };
 
 struct link_ {
-  interface_t intf1;
-  interface_t intf2;
+  struct interface_ if1;
+  struct interface_ if2;
   unsigned int cost;
 };
 
@@ -56,18 +56,20 @@ typedef struct graph_ {
   glthread_t node_list; 
 } graph_t;
 
+/* Get Neighbor Node */
 static inline node_t *
 get_nbr_node(interface_t *interface) {
   
   assert(interface->link);
   assert(interface->att_node);
 
-  if (interface == &interface->link->intf1) {
-    return interface->link->intf2.att_node;
+  if (interface == &interface->link->if1) {
+    return interface->link->if2.att_node;
   }
-  return interface->link->intf1.att_node;
+  return interface->link->if1.att_node;
 }
 
+/* Get available interface slot */
 static inline int
 get_node_intf_available_slot(node_t *node) {
   for (int i = 0; i < MAX_INTF_PER_NODE; i++) {
@@ -79,6 +81,7 @@ get_node_intf_available_slot(node_t *node) {
 
 graph_t * 
 create_new_graph(char * topology_name);
+void free_graph(graph_t * g);
 
 node_t * 
 create_graph_node(graph_t * g, char* node_name);
@@ -86,8 +89,8 @@ create_graph_node(graph_t * g, char* node_name);
 void
 insert_link_between_two_nodes(node_t * rt_1,
 	node_t * rt_2,
-	char * from_intf_name,
-	char * to_intf_name,
+	char * from_if_name,
+	char * to_if_name,
 	unsigned int cost );
 
 node_t *
@@ -103,7 +106,7 @@ void
 print_node(node_t * node);
 
 void
-print_intf(interface_t * endpoint);
+print_interface(interface_t * endpoint);
 
 interface_t *
 get_node_if_by_name(node_t *node, char *if_name);
