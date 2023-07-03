@@ -1,23 +1,22 @@
+LIBS=-lpthread -L ./CommandParser/ -lcli
 CC=gcc
 CFLAGS=-g
-TARGET:topo_test
-
-SRC=graph.c \
-		net.c \
-		topology.c \
-		utils.c \
-		gluethread/glthread.c
+TARGET:maincli
 
 OBJS=graph.o \
 		 net.o \
+		 nwcli.o \
 		 topology.o\
 		 utils.o \
 		 gluethread/glthread.o
 
 GL_OBJS=gluethread/glthread.o
 
-libtcpipstack.a: ${OBJS}
-	ar rs libtcpipstack.a ${OBJS}
+maincli: maincli.o ${OBJS} CommandParser/libcli.a
+	${CC} ${CFLAGS} maincli.o ${OBJS} ${LIBS} -o maincli
+
+maincli.o:maincli.c
+	${CC} ${CFLAGS} -c -I . maincli.c -o maincli.o
 
 topo_test:topo_test.o ${OBJS}
 	${CC} ${CFLAGS} topo_test.o ${OBJS} -o topo_test
@@ -52,9 +51,16 @@ utils_test.o:utils_test.c
 topology.o:topology.c
 	${CC} ${CFLAGS} -c -I . topology.c -o topology.o
 
+nwcli.o:nwcli.c
+	${CC} ${CFLAGS} -c -I . nwcli.c -o nwcli.o
+
+CommandParser/libcli.a:
+	${MAKE} -C CommandParser libcli.a
+
 clean:
-	rm ${OBJS}
+	rm maincli
+	rm *.o
 	rm *_test
 	rm *_test.o
 	rm gluethread/glthread_test.o
-	rm libtcpipstack.a
+	${MAKE} -C CommandParser clean

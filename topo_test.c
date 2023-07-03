@@ -2,6 +2,8 @@
 #include "net.h"
 #include <stdio.h>
 
+extern graph_t * build_first_topo();
+
 int 
 main(int argc, char **argv){
 

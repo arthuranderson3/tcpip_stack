@@ -1,5 +1,5 @@
 #!/bin/bash
 
-docker build -t tcpip-stack-topo-test .
-docker run tcpip-stack-topo-test
+docker build -t main-cli .
+docker run -t -i main-cli
 

@@ -5,6 +5,6 @@ COPY . .
 RUN make
 
 FROM alpine
-COPY --from=tcpip_stack-build-env /app/topo_test /app/topo_test
+COPY --from=tcpip_stack-build-env /app/maincli /app/maincli
 WORKDIR /app
-CMD ./topo_test
+CMD ./maincli
