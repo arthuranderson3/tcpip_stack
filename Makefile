@@ -1,14 +1,23 @@
 CC=gcc
 CFLAGS=-g
-TARGET:topo_test
+TARGET:topo_test libtcpip_stack.a
 
-OBJS=gluethread/glthread.o	\
-		graph.o		\
-		net.o 		\
-		utils.o		\
-		topology.o
+SRC=graph.c \
+		net.c \
+		topology.c \
+		utils.c \
+		gluethread/glthread.c
+
+OBJS=graph.o \
+		 net.o \
+		 topology.o\
+		 utils.o \
+		 gluethread/glthread.o
 
 GL_OBJS=gluethread/glthread.o
+
+libtcpipstack.a: ${OBJS}
+	ar rs libtcpipstack.a ${OBJS}
 
 topo_test:topo_test.o ${OBJS}
 	${CC} ${CFLAGS} topo_test.o ${OBJS} -o topo_test
@@ -45,6 +54,7 @@ topology.o:topology.c
 
 clean:
 	rm ${OBJS}
+	rm libtcpipstack.a
 	rm *_test
 	rm *_test.o
 	rm gluethread/glthread_test.o
