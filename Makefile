@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-g
-TARGET:topo_test libtcpip_stack.a
+TARGET:topo_test
 
 SRC=graph.c \
 		net.c \
@@ -54,7 +54,7 @@ topology.o:topology.c
 
 clean:
 	rm ${OBJS}
-	rm libtcpipstack.a
 	rm *_test
 	rm *_test.o
 	rm gluethread/glthread_test.o
+	rm libtcpipstack.a

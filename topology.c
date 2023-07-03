@@ -1,9 +1,9 @@
 #include "graph.h"
 
 graph_t *
-build_first_topo(){
+build_first_topo() {
 
-#if 0
+	/**
 
                           +----------+
                       0/4 |          |0/0
@@ -21,8 +21,7 @@ build_first_topo(){
      |       |30.1.1.2/24                        30.1.1.1/24|          |
      +-------+                                              +----------+
      122.1.1.1                                              122.1.1.2
-#endif
-
+	* */
 
     graph_t *topo = create_new_graph("Hello World Generic Graph");
     node_t *R0_re = create_graph_node(topo, "R0_re");

@@ -114,4 +114,7 @@ get_node_if_by_name(node_t *node, char *if_name);
 node_t *
 get_node_by_node_name(graph_t *topo, char *node_name);
 
+graph_t *
+build_first_topo();
+
 #endif // __AA_TCPIP_STACK_GRAPH__
