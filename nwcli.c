@@ -18,10 +18,17 @@ show_topology_cb(param_t * param, ser_buff_t * tlv_buff, op_mode enable_or_disab
 }
 
 int
-run_node_resolvearp_cb(param_t * param, ser_buff_t * tlv_buff, op_mode enable_or_disable) {
-	printf("%s() is called.. ", __FUNCTION__);
-	int cmd_code = EXTRACT_CMD_CODE(tlv_buff);
-	printf("CMD_CODE %d\n", cmd_code);
+validate_node_name(char * name) {
+	node_t * node = get_node_by_node_name(topo, name);
+	if (!node) {
+		printf("node name not found in topology: %s\n", name);
+		return VALIDATION_FAILED;
+	}
+	return VALIDATION_SUCCESS;
+}
+
+static int
+arp_handler(param_t * param, ser_buff_t * tlv_buff, op_mode enable_or_disable) {
 	
 	tlv_struct_t * tlv;
 	char * node_name = NULL;
@@ -73,7 +80,7 @@ nw_init_cli() {
 	libcli_register_param(run, &run_node);
 
 	static param_t run_node_name;
-	init_param(&run_node_name, LEAF, NULL, NULL, NULL, STRING, "node-name", "help: run node <node-name>");
+	init_param(&run_node_name, LEAF, NULL, NULL, validate_node_name, STRING, "node-name", "help: run node <node-name>");
 	libcli_register_param(&run_node, &run_node_name);
 
 	static param_t run_node_name_resolvearp;
@@ -81,7 +88,7 @@ nw_init_cli() {
 	libcli_register_param(&run_node_name, &run_node_name_resolvearp);
 
 	static param_t run_node_name_resolvearp_ipaddress;
-	init_param(&run_node_name_resolvearp_ipaddress, LEAF, NULL, run_node_resolvearp_cb, NULL, IPV4, "ip-address", "help: run node <node-name> resolve-arp <ip-address>");
+	init_param(&run_node_name_resolvearp_ipaddress, LEAF, NULL, arp_handler, NULL, IPV4, "ip-address", "help: run node <node-name> resolve-arp <ip-address>");
 	libcli_register_param(&run_node_name_resolvearp, &run_node_name_resolvearp_ipaddress);
 	set_param_cmd_code(&run_node_name_resolvearp_ipaddress, CMDCODES_RUN_NODE_RESOLVE_ARP);
 	
