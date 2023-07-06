@@ -1,6 +1,7 @@
 #include "CommandParser/libcli.h"
 #include "graph.h"
 
+extern void nw_init_cli();
 extern graph_t * build_first_topo();
 graph_t * topo;
 

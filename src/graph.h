@@ -40,6 +40,8 @@ struct node_ {
   char node_name[NODE_NAME_SIZE];
   struct interface_ * intf[MAX_INTF_PER_NODE];
   glthread_t graph_glue;
+  uint16_t udp_port_number;
+  int32_t udp_sock_fd;
   struct node_nw_prop_ node_nw_prop;
 };
 

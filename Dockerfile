@@ -1,7 +1,7 @@
 FROM alpine as tcpip_stack-build-env
 RUN apk add --no-cache build-base
 WORKDIR /app
-COPY . .
+COPY src/. .
 RUN make
 
 FROM alpine

@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdio.h>
 
+extern void init_udp_socket(node_t *);
+
 graph_t * 
 create_new_graph(char * topology_name) {
 
@@ -19,16 +21,16 @@ create_new_graph(char * topology_name) {
 
 node_t * 
 create_graph_node(graph_t * g, char* node_name) {
-
-  node_t * n = calloc(1, sizeof(node_t));
-  strncpy(n->node_name, node_name, NODE_NAME_SIZE);
-  n->node_name[NODE_NAME_SIZE-1] = '\0';
-
+  node_t * node = calloc(1, sizeof(node_t));
+  strncpy(node->node_name, node_name, NODE_NAME_SIZE);
+  node->node_name[NODE_NAME_SIZE-1] = '\0';
+  init_node_nw_prop(&node->node_nw_prop);
+  init_udp_socket(node);
   // initialize the nodes link into glthread
-  glthread_init(&n->graph_glue);
+  glthread_init(&node->graph_glue);
   // append it to the graph's list
-  glthread_append(&g->node_list, &n->graph_glue);
-  return n;
+  glthread_append(&g->node_list, &node->graph_glue);
+  return node;
 }
 
 void
