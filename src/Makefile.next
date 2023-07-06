@@ -1,0 +1,40 @@
+LIBS := -lpthread -L ./CommandParser/ -lcli
+CC   := gcc
+CFLAGS := -g
+
+PROJECT := maincli
+
+INCLUDES := -I .
+
+MODULES := comm glthread graph net nwcli utils topology
+SOURCES := $(MODULES).c
+OBJECTS := $(MODULES).o
+
+TARGET:maincli
+
+maincli: maincli.o $(OBJECTS) CommandParser/libcli.a
+	$(CC) $(CFLAGS) $(OBJECTS) $(LIBS) -o $(output)
+
+test: topo_test glthread_test utils_test
+	
+topo_test:topo_test.o $(OBJECTS)
+	$(CC) $(CFLAGS) topo_test.o $(OBJECTS) -o topo_test
+
+glthread_test:glthread_test.o glthread.o
+	$(CC) $(CFLAGS) glthread_test.o glthread.o -o glthread_test
+
+utils_test:utils_test.o utils.o
+	$(CC) $(CFLAGS) utils_test.o utils.o -o utils_test
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+CommandParser/libcli.a:
+	$(MAKE) -C CommandParser libcli.a
+
+clean:
+	$(MAKE) -C CommandParser clean
+	rm maincli
+	rm *.o
+	rm *_test
+	rm CMD_HIST_RECORD_FILE.txt

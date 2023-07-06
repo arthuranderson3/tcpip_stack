@@ -10,9 +10,9 @@ OBJS=comm.o \
 		 nwcli.o \
 		 topology.o\
 		 utils.o \
-		 gluethread/glthread.o
+		 glthread.o
 
-GL_OBJS=gluethread/glthread.o
+GL_OBJS=glthread.o
 
 maincli: maincli.o ${OBJS} CommandParser/libcli.a
 	${CC} ${CFLAGS} maincli.o ${OBJS} ${LIBS} -o maincli
@@ -26,14 +26,14 @@ topo_test:topo_test.o ${OBJS}
 topo_test.o:topo_test.c
 	${CC} ${CFLAGS} -c topo_test.c -o topo_test.o
 
-gluethread/glthread.o:gluethread/glthread.c
-	${CC} ${CFLAGS} -c -I gluethread gluethread/glthread.c -o gluethread/glthread.o
+glthread.o:glthread.c
+	${CC} ${CFLAGS} -c -I . glthread.c -o glthread.o
 
-glthread_test:gluethread/glthread_test.o gluethread/glthread.o
-	${CC} ${CFLAGS} gluethread/glthread_test.o gluethread/glthread.o -o glthread_test
+glthread_test:glthread_test.o glthread.o
+	${CC} ${CFLAGS} glthread_test.o glthread.o -o glthread_test
 
-gluethread/glthread_test.o:gluethread/glthread_test.c
-	${CC} ${CFLAGS} -c -I gluethread gluethread/glthread_test.c -o gluethread/glthread_test.o
+glthread_test.o:glthread_test.c
+	${CC} ${CFLAGS} -c -I . glthread_test.c -o glthread_test.o
 
 comm.o: comm.c
 	${CC} ${CFLAGS} -c -I . comm.c -o comm.o
@@ -66,7 +66,5 @@ clean:
 	${MAKE} -C CommandParser clean
 	rm maincli
 	rm *.o
-	rm gluethread/*.o
 	rm *_test
-	rm *_test.o
 	rm CMD_HIST_RECORD_FILE.txt

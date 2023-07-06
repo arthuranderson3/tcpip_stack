@@ -3,7 +3,7 @@
 
 #include <assert.h>
 #include <string.h>
-#include "gluethread/glthread.h"
+#include "glthread.h"
 #include "net.h"
 
 #define IF_NAME_SIZE 16
