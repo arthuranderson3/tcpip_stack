@@ -21,6 +21,9 @@ main(int argc, char **argv) {
 	char msg[] = "Hello, how are you\0";
 	send_pkt_out(msg, strlen(msg), oif);
 
+	printf("\nFLOOD =====\n");
+	send_pkt_flood(snode, oif, msg, strlen(msg));
+
 	start_shell();
 
 	return 0;

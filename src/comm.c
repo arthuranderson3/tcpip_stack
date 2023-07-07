@@ -182,3 +182,19 @@ send_pkt_out(char *pkt, unsigned int pkt_size, interface_t *interface) {
     close(sock);
     return rc;    
 }
+
+int
+send_pkt_flood(node_t *node, interface_t *exempted_intf, 
+                char *pkt, unsigned int pkt_size) {
+    int rc; // Not sure what to do with this return code.
+            // maybe we should have multiple return codes.
+    for (int i = 0; i < MAX_INTF_PER_NODE; i++) {
+        if (!node->intf[i]) continue;
+        if (node->intf[i] == exempted_intf) continue;
+        rc = send_pkt_out(pkt, pkt_size, node->intf[i]);
+        if (rc == -1) {
+            printf("error send pkt flood interface %d, %s\n", i, node->intf[i]->if_name);
+        }
+    }
+    return rc;
+}
